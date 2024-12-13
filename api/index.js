@@ -1,5 +1,5 @@
 const express = require("express")
-const port = 8080;
+const port = process.env.PORT || 8080;
 const cors = require('cors')
 const app = express();
 const routerApi = require('./routes')
@@ -10,7 +10,7 @@ app.use(express.json()); // Add this line to parse JSON bodies
 
 
 
-app.get("/", (req, res) =>{
+app.get("/api", (req, res) =>{
     res.send("Personal Finances API")
 })
 
