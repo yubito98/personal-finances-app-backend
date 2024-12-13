@@ -1,17 +1,21 @@
 const express = require("express")
 const router = express.Router();
-
-const transactions = require('../database/transactions');
+const transactionsService = require('../services/transactions');
+const transactions = new transactionsService();
 
 router.get("/", (req, res) =>{
-    res.json(transactions)
+    try{
+        res.status(200).json(transactions.read())
+    }catch(error){
+        res.json(error)
+    }
 })
 
 router.post("/", (req, res) =>{
     try{
         const transaction = req.body;
-        transactions.push(transaction)
-        res.json({
+        transactions.create(transaction);
+        res.status(201).json({
             message: "The transaction was added succesfylly",
             transaction: transaction
         })
@@ -23,10 +27,9 @@ router.post("/", (req, res) =>{
 router.delete("/:transactionId", (req, res) =>{
     try{
         let transactionId = req.params.transactionId;
-        transactions.splice(transactionId, 1)
-        res.json({
+        transactions.delete(transactionId);
+        res.status(200).json({
             message: `The transaction ${transactionId} has been removed`,
-            transactions: transactions
         })
     }catch(error){
         console.log(error)
@@ -37,7 +40,8 @@ router.put("/:transactionId", (req, res) =>{
     try{
         let {transactionId} = req.params;
         let transaction = req.body;
-        transactions[transactionId] = transaction;
+        transactions.update(transactionId, transaction)
+        res.status(202).json({transaction})
     }catch(error){
         console.log(error)
     }
