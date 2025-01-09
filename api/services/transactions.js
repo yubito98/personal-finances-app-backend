@@ -1,13 +1,15 @@
-const transactions = require('../database/transactions');
+const database = require('../libs/postgres');
 
 class Transactions{
 
     constructor(){
-        this.transactions = transactions;
+
     }
 
-    read(){
-        return this.transactions;
+    async read(){
+        const transactions = await database();
+        const rta = await transactions.query('SELECT * FROM TRANSACTIONS')
+        return rta.rows;
     }
 
     create(body){

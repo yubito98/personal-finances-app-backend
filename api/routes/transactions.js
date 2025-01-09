@@ -3,9 +3,9 @@ const router = express.Router();
 const transactionsService = require('../services/transactions');
 const transactions = new transactionsService();
 
-router.get("/", (req, res) =>{
+router.get("/", async (req, res) =>{
     try{
-        res.status(200).json(transactions.read())
+        res.status(200).json(await transactions.read())
     }catch(error){
         res.json(error)
     }
