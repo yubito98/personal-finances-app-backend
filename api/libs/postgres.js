@@ -1,17 +1,13 @@
-const {Client} = require('pg')
+const {Pool} = require('pg')
 
 
-async function getConnection(){
-    const client = new Client({
-        host: 'localhost',
-        port: '5432',
-        user: 'yubor',
-        password: '123yubor',
-        database: 'personal_finances'
-    })
-    await client.connect();
-    return client;
-}
+const pool = new Pool({
+    host: 'localhost',
+    port: '5432',
+    user: 'yubor',
+    password: '123yubor',
+    database: 'personal_finances'
+})
 
 
-module.exports = getConnection;
+module.exports = pool;
