@@ -18,7 +18,7 @@ class Transactions{
                 VALUES ($1, $2, $3, $4, $5) 
                 RETURNING *;
             `;
-            const values = [body.concept, body.value, body.type || "Expense", body.category_id || 1, body.date]; // Using placeholders
+            const values = [body.concept, body.value, body.type, body.category_id || 1, body.date]; // Using placeholders
     
             const rta = await database.query(query, values);
             return rta.rows[0]; // Return inserted row
