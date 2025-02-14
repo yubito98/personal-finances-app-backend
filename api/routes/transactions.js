@@ -26,7 +26,7 @@ router.post("/", (req, res) =>{
 
 router.delete("/:transactionId", (req, res) =>{
     try{
-        let transactionId = req.params.transactionId;
+        let {transactionId} = req.params;
         transactions.delete(transactionId);
         res.status(200).json({
             message: `The transaction ${transactionId} has been removed`,
