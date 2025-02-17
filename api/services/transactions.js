@@ -41,7 +41,7 @@ class Transactions{
                 VALUES ($1, $2, $3, $4, $5) 
                 RETURNING *;
             `;
-            const values = [body.concept, body.value, body.type, body.category, body.date]; // Using placeholders
+            const values = [body.concept, body.value, body.type, body.category_id, body.date]; // Using placeholders
     
             const rta = await database.query(query, values);
             return rta.rows[0]; // Return inserted row
@@ -64,8 +64,23 @@ class Transactions{
         }
     }
 
-    update(id, body){
-        this.transactions[id - 1] = body;
+    async update(id, body){
+        const keys = Object.keys(body);
+        if (keys.length === 0) {
+            throw new Error("No fields to update");
+        }
+        
+        const setClause = keys.map((key, index) => `"${key}" = $${index + 1}`).join(", ");
+        const query = `UPDATE transactions SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *;`;
+        const values = [...Object.values(body), id];
+    
+        try {
+            const result = await database.query(query, values);
+            return result.rows[0];
+        } catch (error) {
+            console.error("Error updating record:", error);
+            throw error;
+        }
     }
 
 }

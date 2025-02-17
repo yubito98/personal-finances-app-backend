@@ -3,6 +3,8 @@ const test = {
     lastName:'Molina'
 }
 
-delete test.lastName
+let keys = Object.keys(test);
+const setClause = keys.map((key, index) => `"${key}" = $${index + 1}`).join(", ");
 
-console.log(test)
+
+console.log(setClause)
