@@ -5,7 +5,9 @@ const transactions = new transactionsService();
 
 router.get("/", async (req, res) =>{
     try{
-        res.status(200).json(await transactions.read())
+        const {startDate, endDate}= req.query;
+        const date = {startDate: startDate, endDate:endDate}
+        res.status(200).json(await transactions.read(date))
     }catch(error){
         res.json(error)
     }

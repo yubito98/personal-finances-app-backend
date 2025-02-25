@@ -1,10 +1,13 @@
 const test = {
-    name: 'yubor',
-    lastName:'Molina'
+    hubldev:{
+        amount: [1,2]
+    },
+    gasto:{
+        amount:[5,3]
+    }
+
 }
 
-let keys = Object.keys(test);
-const setClause = keys.map((key, index) => `"${key}" = $${index + 1}`).join(", ");
 
 
-console.log(setClause)
+console.log(Object.keys(test))

@@ -6,30 +6,30 @@ class Transactions{
         
     }
 
-    async read(){
-        try{
+    async read(dateFilter){
+        try {
             const query = `
-            SELECT t.*, c.name AS category_name 
-            FROM Transactions t 
-            JOIN Categories c ON t.category_id = c.id;
-            `
-            const rta = await database.query(query)
-            const transactions = rta.rows.map(item =>{
-                if(item.category_id){
-                    item.category ={
-                        id: item.category_id,
-                        name: item.category_name
-                    }
-                    delete item.category_id
-                    delete item.category_name
-                    return item
-                }
-            })
+              SELECT t.*, c.name AS category_name 
+              FROM Transactions t 
+              JOIN Categories c ON t.category_id = c.id
+              WHERE t.date BETWEEN $1 AND $2;
+            `;
+            const rta = await database.query(query, [dateFilter.startDate, dateFilter.endDate]);
+            const transactions = rta.rows.map(item => {
+              if (item.category_id) {
+                item.category = {
+                  id: item.category_id,
+                  name: item.category_name
+                };
+                delete item.category_id;
+                delete item.category_name;
+              }
+              return item;
+            });
             return transactions;
-        }catch(error){
-            throw error
-        }
-       
+          } catch (error) {
+            throw error;
+          }
     }
 
     
