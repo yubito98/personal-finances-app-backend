@@ -1,7 +1,9 @@
 const express = require('express')
 
 const transaction = require("./transactions");
-const categories = require('./categories')
+const categories = require('./categories');
+const users = require('./users.js');
+const profiles = require('./profiles.js')
 
 
 function routerApi(app){
@@ -9,6 +11,8 @@ function routerApi(app){
     app.use('/api', router)
     router.use('/transactions', transaction);
     router.use('/categories', categories);
+    router.use('/users', users);
+    router.use('/profiles', profiles);
 }
 
 
